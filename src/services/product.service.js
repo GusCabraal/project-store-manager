@@ -1,7 +1,7 @@
 const { productModel } = require('../models');
 
 const getProductById = async (id) => {
-  const result = await productModel.findById(id);
+  const [result] = await productModel.findById(id);
   if (result) {
     return { type: null, message: result };
   }
