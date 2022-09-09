@@ -6,6 +6,9 @@ const app = express();
 app.get('/', (_request, response) => {
   response.send();
 });
+app.get('/laland', (_request, response) => {
+  response.json({ message: 'bora bill' });
+});
 
 // não remova essa exportação, é para o avaliador funcionar
 // você pode registrar suas rotas normalmente, como o exemplo acima
