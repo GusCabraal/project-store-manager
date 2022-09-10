@@ -4,14 +4,13 @@ const app = express();
 
 const { productRoutes } = require('./routers/index');
 
+app.use(express.json());
+
 app.use('/products', productRoutes);
 
 // não remova esse endpoint, é para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
-});
-app.get('/laland', (_request, response) => {
-  response.json({ message: 'bora bill' });
 });
 
 // não remova essa exportação, é para o avaliador funcionar
