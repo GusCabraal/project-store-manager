@@ -22,9 +22,19 @@ const createProduct = async (name) => {
   const newProduct = await productModel.insert(name);
   return { type: null, message: newProduct };
 };
+const updateProduct = async (name, id) => {
+  const error = validateNewProductSchema(name);
+  if (error.type) return error;
+  const errorSQL = await productModel.updateById(name, id);
+  if (errorSQL) {
+    return { type: null, message: { id, name } };
+  }
+  return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+};
 
 module.exports = {
   getProductById,
   getProducts,
   createProduct,
+  updateProduct,
 };
