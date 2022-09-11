@@ -1,7 +1,7 @@
-const { salesModel } = require('../models');
-// const {
-//   validateNewProductSchema,
-// } = require('./validation/validationInputValues');
+const { salesModel, productModel } = require('../models');
+const {
+  validateNewSaleSchema,
+} = require('./validation/validationInputValues');
 
 // const date = '2022-05-05';
 const date = new Date();
@@ -15,12 +15,36 @@ const saveSales = (sales, newSale) => {
 
   // return [];
 };
+// const productsNewSalesExist = async (sales) => {
+//   sales.map(async (sale) => {
+//     await productModel.findById(sale.productId);
+//   });
+
+  const allProductsExists = (sales) => {
+    if (sales && sales.length > 0) {
+      return sales.map(async ({ productId }) => {
+        const [product] = await productModel.findById(productId);
+          if (product) {
+            return true;
+          }
+          return false;
+      });
+    }
+    return [];
+  };
 
 const createSales = async (sales) => {
-  const newSale = await salesModel.insertSale(date);
-  await Promise.all(saveSales(sales, newSale));
+  const error = validateNewSaleSchema(sales);
+  if (error.type) return error;
+
+  const promisseAll = await Promise.all(allProductsExists(sales));
+  if (promisseAll.includes(false)) {
+    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+  }
+    const saleId = await salesModel.insertSale(date);
+  await Promise.all(saveSales(sales, saleId));
   const newSales = {
-    id: newSale,
+    id: saleId,
     itemsSold: sales,
   };
   return { type: null, message: newSales };

@@ -2,12 +2,12 @@ const express = require('express');
 
 const app = express();
 
-const { productRoutes } = require('./routers/index');
+const { productRoutes, salesRoutes } = require('./routers/index');
 
 app.use(express.json());
 
 app.use('/products', productRoutes);
-// app.use('/sales', salesRoutes);
+app.use('/sales', salesRoutes);
 
 // não remova esse endpoint, é para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -21,5 +21,5 @@ app.get('/', (_request, response) => {
 
 // não remova essa exportação, é para o avaliador funcionar
 // você pode registrar suas rotas normalmente, como o exemplo acima
-// você deve usar o arquivo index.js para executar sua aplicação 
+// você deve usar o arquivo server.js para executar sua aplicação 
 module.exports = app;
