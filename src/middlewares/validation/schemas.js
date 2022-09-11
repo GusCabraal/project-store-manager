@@ -1,5 +1,3 @@
-// src/services/validations/schemas.js
-
 const Joi = require('joi');
 
 const addNewProduct = Joi.object({

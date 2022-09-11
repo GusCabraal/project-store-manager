@@ -1,7 +1,7 @@
 const { salesModel, productModel } = require('../models');
-const {
-  validateNewSaleSchema,
-} = require('./validation/validationInputValues');
+// const {
+//   validateNewSaleSchema,
+// } = require('./validation/validationInputValues');
 
 // const date = '2022-05-05';
 const date = new Date();
@@ -34,8 +34,8 @@ const saveSales = (sales, newSale) => {
   };
 
 const createSales = async (sales) => {
-  const error = validateNewSaleSchema(sales);
-  if (error.type) return error;
+  // const error = validateNewSaleSchema(sales);
+  // if (error.type) return error;
 
   const promisseAll = await Promise.all(allProductsExists(sales));
   if (promisseAll.includes(false)) {
