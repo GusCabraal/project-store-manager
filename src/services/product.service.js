@@ -22,6 +22,7 @@ const createProduct = async (name) => {
   const newProduct = await productModel.insert(name);
   return { type: null, message: newProduct };
 };
+
 const updateProduct = async (name, id) => {
   const error = validateNewProductSchema(name);
   if (error.type) return error;
@@ -31,10 +32,18 @@ const updateProduct = async (name, id) => {
   }
   return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
 };
+const deleteProduct = async (id) => {
+  const errorSQL = await productModel.deleteById(id);
+  if (errorSQL) {
+    return { type: null, message: {} };
+  }
+  return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+};
 
 module.exports = {
   getProductById,
   getProducts,
   createProduct,
   updateProduct,
+  deleteProduct,
 };
