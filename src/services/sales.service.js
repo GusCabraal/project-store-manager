@@ -22,6 +22,15 @@ const saveSales = (sales, newSale) => {
     });
   }
 };
+const updateSales = (saleId, itemsUpdated) => {
+  if (itemsUpdated && itemsUpdated.length > 0) {
+    return itemsUpdated.map(async ({ productId, quantity }) => {
+      const result = await salesModel.updateById(saleId, productId, quantity);
+              if (result) return true;
+              return false;
+    });
+  }
+};
 
 const allProductsExists = (sales) => {
   if (sales && sales.length > 0) {
@@ -48,6 +57,18 @@ const createSales = async (sales) => {
   return { type: null, message: newSales };
 };
 
+const updateSale = async (saleId, itemsUpdated) => {
+  const promisseProduct = await Promise.all(allProductsExists(itemsUpdated));
+  if (promisseProduct.includes(false)) {
+    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+  }
+  const promisseUpdate = await Promise.all(updateSales(saleId, itemsUpdated));
+  if (promisseUpdate.includes(false)) {
+    return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+  }
+  return { type: null, message: { saleId, itemsUpdated } };
+};
+
 const deleteSale = async (id) => {
   const errorSQL = await salesModel.deleteById(id);
   if (errorSQL) {
@@ -61,4 +82,5 @@ module.exports = {
   getSaleById,
   getSales,
   deleteSale,
+  updateSale,
 };
