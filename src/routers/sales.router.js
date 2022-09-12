@@ -4,8 +4,9 @@ const { validateNewSaleSchema } = require('../middlewares/validation/validationI
 
 const router = express.Router();
 
-router.post('/', validateNewSaleSchema, salesController.createSales);
 router.get('/', salesController.getSales);
 router.get('/:id', salesController.getSaleById);
+router.post('/', validateNewSaleSchema, salesController.createSales);
+router.delete('/:id', salesController.deleteSale);
 
 module.exports = router;
