@@ -5,6 +5,7 @@ const { validateNewProductSchema } = require('../middlewares/validation/validati
 const router = express.Router();
 
 router.get('/', productController.getProducts);
+router.get('/search', productController.getProductByName);
 router.get('/:id', productController.getProductById);
 router.post('/', validateNewProductSchema, productController.createProduct);
 router.put('/:id', validateNewProductSchema, productController.updateProduct);

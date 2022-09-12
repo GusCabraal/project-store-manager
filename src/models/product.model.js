@@ -2,6 +2,13 @@
 // const snakeize = require('snakeize');
 const connection = require('./connection');
 
+const findAll = async () => {
+  const [result] = await connection.execute(
+    'SELECT * FROM StoreManager.products',
+  );
+  return result;
+};
+
 const findById = async (productId) => {
   const [result] = await connection.execute(
     'SELECT * FROM StoreManager.products WHERE id = ?',
@@ -9,9 +16,12 @@ const findById = async (productId) => {
   );
   return result;
 };
-const findAll = async () => {
+
+const findByName = async (productName) => {
   const [result] = await connection.execute(
-    'SELECT * FROM StoreManager.products',
+    `SELECT * FROM StoreManager.products
+      WHERE name LIKE ('${productName}%')`,
+    [productName],
   );
   return result;
 };
@@ -50,4 +60,5 @@ module.exports = {
   insert,
   updateById,
   deleteById,
+  findByName,
 };
