@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 const sinon = require("sinon");
-const productModel = require("../../../src/models/product.model");
+const { productModel } = require("../../../src/models");
 const { productService } = require("../../../src/services");
 const {
   productsResponse,
