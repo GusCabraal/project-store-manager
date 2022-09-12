@@ -15,7 +15,10 @@ const getProducts = async () => {
 
 const getProductsByName = async (name) => {
   const result = await productModel.findByName(name);
-  return { type: null, message: result };
+  if (result.length > 0) {
+    return { type: null, message: result };
+  }
+  return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
 };
 
 const createProduct = async (name) => {
