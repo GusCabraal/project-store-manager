@@ -10,9 +10,11 @@ const {productController} = require("../../../src/controllers");
 const {
   productsResponse,
   productResponse,
+  newProductResponse,
+  updateProductResponse,
 } = require("./mocks/product.controller.mock");
 
-describe("Verificando controller de product", function () {
+describe("Verificando controller de LER products", function () {
   describe("Teste de unidade de get products", function () {
     it("Buscando todos os produtos", async function () {
       const res = {};
@@ -62,97 +64,154 @@ describe("Verificando controller de product", function () {
       expect(res.json).to.have.been.calledWith({message: 'product not found'});
     });
   });
+  describe("Teste de unidade de get productByName", function () {
+    it("Buscando um nome valido", async function () {
+      const res = {};
+      const req = { query: { name: 'Traje' }, body: {} };
 
-  // describe("Atribuições de viagem com erros de id inexistente", function () {
-  //   it("travelId inexistente status 404 e mensagem travelId not found", async function () {
-  //     const res = {};
-  //     const req = { params: { travelId: 9999, driverId: 1 }, body: {} };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productService, "getProductsByName")
+        .resolves({ type: null, message: productResponse });
 
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-  //     sinon
-  //       .stub(driverService, "travelAssign")
-  //       .resolves({
-  //         type: "TRAVEL_NOT_FOUND",
-  //         message: '"travelId" not found',
-  //       });
+      await productController.getProductByName(req, res);
 
-  //     await driverController.travelAssign(req, res);
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(productResponse);
+    });
+    it("Buscando um nome invalido", async function () {
+      const res = {};
+      const req = { query: { name: 'xablau' }, body: {} };
 
-  //     expect(res.status).to.have.been.calledWith(404);
-  //     expect(res.json).to.have.been.calledWith({
-  //       message: '"travelId" not found',
-  //     });
-  //   });
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productService, "getProductsByName")
+        .resolves({ type: "PRODUCT_NOT_FOUND", message: "product not found" });
 
-  //   it("driverId inexistente status 404 e mensagem driverId not found", async function () {
-  //     const res = {};
-  //     const req = { params: { travelId: 1, driverId: 9999 }, body: {} };
+      await productController.getProductByName(req, res);
 
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-  //     sinon.stub(driverService, "travelAssign").resolves({
-  //       type: "DRIVER_NOT_FOUND",
-  //       message: '"driverId" not found',
-  //     });
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({message: 'product not found'});
+    });
+    it("Não passando um nome e retornando todos os produtos", async function () {
+      const res = {};
+      const req = { query: { name: "" }, body: {} };
 
-  //     await driverController.travelAssign(req, res);
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productService, "getProductsByName")
+        .resolves({ type: null, message: productsResponse });
 
-  //     expect(res.status).to.have.been.calledWith(404);
-  //     expect(res.json).to.have.been.calledWith({
-  //       message: '"driverId" not found',
-  //     });
-  //   });
-  // });
+      await productController.getProductByName(req, res);
 
-  // describe("Atribuições de viagem com motorista ocupado", function () {
-  //   it("retorna status 409 e mensagem travel already assigned", async function () {
-  //     const res = {};
-  //     const req = { params: { travelId: 1, driverId: 1 }, body: {} };
-
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-  //     sinon
-  //       .stub(driverService, "travelAssign")
-  //       .resolves({
-  //         type: "TRAVEL_CONFLICT",
-  //         message: "travel already assigned",
-  //       });
-
-  //     await driverController.travelAssign(req, res);
-
-  //     expect(res.status).to.have.been.calledWith(409);
-  //     expect(res.json).to.have.been.calledWith({
-  //       message: "travel already assigned",
-  //     });
-  //   });
-  // });
-
-  // describe("Atribuições de viagem com sucesso", function () {
-  //   it("retorna status 200 e objeto com resultado", async function () {
-  //     const res = {};
-  //     const req = { params: { travelId: 1, driverId: 1 }, body: {} };
-
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-  //     sinon
-  //       .stub(driverService, "travelAssign")
-  //       .resolves({ type: null, message: correctReturnTravel });
-
-  //     await driverController.travelAssign(req, res);
-
-  //     expect(res.status).to.have.been.calledWith(200);
-  //     expect(res.json).to.have.been.calledWith({
-  //       id: 1,
-  //       passengerId: 1,
-  //       driverId: null,
-  //       travelStatusId: 2,
-  //       startingAddress: "Start",
-  //       endingAddress: "End",
-  //       requestDate: "2022-08-24T03:04:04.374Z",
-  //     });
-  //   });
-  // });
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(productsResponse);
+    });
+  });
 
   afterEach(sinon.restore);
+});
+
+describe("Verificando controller de ESCREVER em products", function () {
+  describe("Teste de unidade de criar um produto", function () {
+    it("Com sucesso", async function () {
+      const res = {};
+      const req = { params: {}, body: { name: "Calção do Hulk" } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productService, "createProduct")
+        .resolves({ type: null, message: newProductResponse });
+
+      await productController.createProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(201);
+      expect(res.json).to.have.been.calledWith(newProductResponse);
+    });
+    afterEach(sinon.restore);
+  });
+
+});
+
+describe("Verificando controller de ATUALIZAR em products", function () {
+  describe("Teste de unidade de atualizar um produto", function () {
+    it("Com sucesso", async function () {
+      const res = {};
+      const req = { params: { id: 1 }, body: { name: "Calção do Hulk" } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productService, "updateProduct")
+        .resolves({ type: null, message: updateProductResponse });
+
+      await productController.updateProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(updateProductResponse);
+    });
+    it("Sem sucesso", async function () {
+      const res = {};
+      const req = { params: { id: 100 }, body: {} };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productService, "updateProduct")
+        .resolves({
+          type: "PRODUCT_NOT_FOUND",
+          message: "Product not found",
+        });
+
+      await productController.updateProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({
+        message: "Product not found",
+      });
+    });
+    afterEach(sinon.restore);
+  });
+  });
+
+describe("Verificando controller de DELETAR um produto", function () {
+  describe("Teste de unidade de deletar um produto", function () {
+    it("Com sucesso", async function () {
+      const res = {};
+      const req = { params: { id: 1 }, body: { } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productService, "deleteProduct")
+        .resolves({ type: null, message: {} });
+
+      await productController.deleteProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(204);
+    });
+    it("Sem sucesso", async function () {
+      const res = {};
+      const req = { params: { id: 100 }, body: { } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productService, "deleteProduct")
+        .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
+
+      await productController.deleteProduct(req, res);
+
+       expect(res.status).to.have.been.calledWith(404);
+       expect(res.json).to.have.been.calledWith({
+         message: "Product not found",
+       });
+    });
+    afterEach(sinon.restore);
+  });
+
 });

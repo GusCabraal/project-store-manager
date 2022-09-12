@@ -18,7 +18,20 @@ const productResponse = {
   name: "Traje de encolhimento",
 };
 
+const newProductResponse = {
+  id: 4,
+  name: "Calção do Hulk",
+};
+
+const updateProductResponse = {
+  id: 1,
+  name: "Calção do Hulk",
+};
+
+
 module.exports = {
   productsResponse,
   productResponse,
+  newProductResponse,
+  updateProductResponse,
 };

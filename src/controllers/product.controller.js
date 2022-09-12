@@ -25,8 +25,7 @@ const getProductById = async (req, res) => {
 
 const createProduct = async (req, res) => {
   const { name } = req.body;
-  const { type, message } = await productService.createProduct(name);
-  if (type) return res.status(errorMap.mapError(type)).json({ message });
+  const { message } = await productService.createProduct(name);
   res.status(201).json(message);
 };
 
@@ -42,7 +41,7 @@ const deleteProduct = async (req, res) => {
   const { id } = req.params;
   const { type, message } = await productService.deleteProduct(id);
   if (type) return res.status(errorMap.mapError(type)).json({ message });
-  res.status(204).send();
+  res.status(204).json();
 };
 
 module.exports = {
