@@ -1,6 +1,31 @@
 const { salesModel, productModel } = require('../models');
 
-const date = new Date();
+const saveSaleProduct = (sales, newSale) => {
+  if (sales && sales.length > 0) {
+    return sales.map(async ({ productId, quantity }) => {
+      await salesModel.insertSaleProduct(newSale, productId, quantity);
+    });
+  }
+};
+const updateSales = (saleId, itemsUpdated) => {
+  if (itemsUpdated && itemsUpdated.length > 0) {
+    return itemsUpdated.map(async ({ productId, quantity }) => {
+      const result = await salesModel.updateById(saleId, productId, quantity);
+      if (result) return true;
+      return false;
+    });
+  }
+};
+
+const allProductsExist = (sales) => {
+  if (sales && sales.length > 0) {
+    return sales.map(async ({ productId }) => {
+      const [product] = await productModel.findById(productId);
+      if (product) return true;
+      return false;
+    });
+  }
+};
 
 const getSales = async () => {
   const result = await salesModel.findAll();
@@ -15,41 +40,13 @@ const getSaleById = async (id) => {
   return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
 };
 
-const saveSales = (sales, newSale) => {
-  if (sales && sales.length > 0) {
-    return sales.map(async ({ productId, quantity }) => {
-      await salesModel.insert(newSale, productId, quantity);
-    });
-  }
-};
-const updateSales = (saleId, itemsUpdated) => {
-  if (itemsUpdated && itemsUpdated.length > 0) {
-    return itemsUpdated.map(async ({ productId, quantity }) => {
-      const result = await salesModel.updateById(saleId, productId, quantity);
-              if (result) return true;
-              return false;
-    });
-  }
-};
-
-const allProductsExists = (sales) => {
-  if (sales && sales.length > 0) {
-    return sales.map(async ({ productId }) => {
-      const [product] = await productModel.findById(productId);
-        if (product) return true;
-        return false;
-    });
-  }
-  return [];
-};
-
 const createSales = async (sales) => {
-  const promisseAll = await Promise.all(allProductsExists(sales));
+  const promisseAll = await Promise.all(allProductsExist(sales));
   if (promisseAll.includes(false)) {
     return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
   }
-    const saleId = await salesModel.insertSale(date);
-  await Promise.all(saveSales(sales, saleId));
+  const saleId = await salesModel.insertSale();
+  await Promise.all(saveSaleProduct(sales, saleId));
   const newSales = {
     id: saleId,
     itemsSold: sales,
@@ -58,8 +55,8 @@ const createSales = async (sales) => {
 };
 
 const updateSale = async (saleId, itemsUpdated) => {
-  const promisseProduct = await Promise.all(allProductsExists(itemsUpdated));
-  if (promisseProduct.includes(false)) {
+  const isProductsExist = await Promise.all(allProductsExist(itemsUpdated));
+  if (isProductsExist.includes(false)) {
     return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
   }
   const promisseUpdate = await Promise.all(updateSales(saleId, itemsUpdated));
