@@ -115,7 +115,7 @@ describe("Verificando controller de ESCREVER em sales", function () {
       await salesController.createSales(req, res);
 
       expect(res.status).to.have.been.calledWith(404);
-      expect(res.json).to.have.been.calledWith("Product not found");
+      expect(res.json).to.have.been.calledWith({ message: "Product not found" });
     });
     afterEach(sinon.restore);
   });
