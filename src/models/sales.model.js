@@ -15,6 +15,14 @@ const findAll = async () => {
   return sale;
 };
 
+const findSaleById = async (productId) => {
+  const [result] = await connection.execute(
+    'SELECT * FROM StoreManager.sales_products WHERE id = ?',
+    [productId],
+  );
+  return result;
+};
+
 const findById = async (id) => {
   const [result] = await connection.execute(
     `SELECT
@@ -35,27 +43,18 @@ const findById = async (id) => {
   return sale;
 };
 
-const insertSale = async (date) => {
+const insertSale = async () => {
   const [{ insertId }] = await connection.execute(
-    'INSERT INTO StoreManager.sales (date) VALUE (?)',
-    [date],
+    'INSERT INTO StoreManager.sales (date) VALUE (now())',
   );
   return insertId;
 };
 
-const insert = async (id, productId, quantity) => {
+const insertSaleProduct = async (id, productId, quantity) => {
   await connection.execute(
     'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUE (?, ?, ?)',
     [id, productId, quantity],
   );
-};
-
-const findSaleById = async (productId) => {
-  const [result] = await connection.execute(
-    'SELECT * FROM StoreManager.sales_products WHERE id = ?',
-    [productId],
-  );
-  return result;
 };
 
 const updateById = async (saleId, productId, quantity) => {
@@ -80,7 +79,7 @@ const deleteById = async (id) => {
 module.exports = {
   findAll,
   findById,
-  insert,
+  insertSaleProduct,
   insertSale,
   findSaleById,
   deleteById,
