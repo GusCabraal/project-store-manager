@@ -51,10 +51,11 @@ const insertSale = async () => {
 };
 
 const insertSaleProduct = async (id, productId, quantity) => {
-  await connection.execute(
+  const [{ insertId }] = await connection.execute(
     'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUE (?, ?, ?)',
     [id, productId, quantity],
   );
+  return insertId;
 };
 
 const updateById = async (saleId, productId, quantity) => {
