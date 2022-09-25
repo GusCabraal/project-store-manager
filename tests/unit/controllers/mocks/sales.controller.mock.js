@@ -27,7 +27,41 @@ const saleResponse = [
   },
 ];
 
+const newSaleResponse = {
+  id: 4,
+  itemsSold: [
+    {
+      productId: 1,
+      quantity: 1,
+    },
+    {
+      productId: 2,
+      quantity: 1,
+    },
+    {
+      productId: 3,
+      quantity: 5,
+    },
+  ],
+};
+
+const updatedSaleResponse = {
+  saleId: 3,
+  itemsUpdated: [
+    {
+      productId: 1,
+      quantity: 10001,
+    },
+    {
+      productId: 2,
+      quantity: 250,
+    },
+  ],
+};
+
 module.exports = {
   salesResponse,
   saleResponse,
+  newSaleResponse,
+  updatedSaleResponse,
 };
