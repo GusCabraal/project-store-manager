@@ -1,5 +1,3 @@
-// const camelize = require('camelize');
-// const snakeize = require('snakeize');
 const connection = require('./connection');
 
 const findAll = async () => {
@@ -20,7 +18,7 @@ const findById = async (productId) => {
 const findByName = async (productName) => {
   const [result] = await connection.execute(
     `SELECT * FROM StoreManager.products
-      WHERE name LIKE ('${productName}%')`,
+      WHERE name LIKE concat(?, '%');`,
     [productName],
   );
   return result;
