@@ -52,11 +52,6 @@ const saleResponseFromDB = {
   quantity: 15,
 };
 
-const saleProductResponse = {
-  saleId: 1,
-  productId: 2,
-  quantity: 3,
-}
 const saleProductResponseFromDB = {
   sale_id: 1,
   product_id: 2,
@@ -68,6 +63,5 @@ module.exports = {
   salesResponseFromDB,
   saleResponse,
   saleResponseFromDB,
-  saleProductResponse,
   saleProductResponseFromDB,
 };

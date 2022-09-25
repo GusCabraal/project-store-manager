@@ -1,21 +1,13 @@
 const { salesModel, productModel } = require('../models');
 
-const saveSaleProduct = (sales, newSale) => {
-  if (sales && sales.length > 0) {
-    return sales.map(async ({ productId, quantity }) => {
+const saveSaleProduct = (sales, newSale) => sales.map(async ({ productId, quantity }) => {
       await salesModel.insertSaleProduct(newSale, productId, quantity);
     });
-  }
-};
-const updateSales = (saleId, itemsUpdated) => {
-  if (itemsUpdated && itemsUpdated.length > 0) {
-    return itemsUpdated.map(async ({ productId, quantity }) => {
+const updateSales = (saleId, itemsUpdated) => itemsUpdated.map(async ({ productId, quantity }) => {
       const result = await salesModel.updateById(saleId, productId, quantity);
       if (result) return true;
       return false;
     });
-  }
-};
 
 const allProductsExist = (sales) => {
   if (sales && sales.length > 0) {
@@ -25,6 +17,7 @@ const allProductsExist = (sales) => {
       return false;
     });
   }
+  return [false];
 };
 
 const getSales = async () => {

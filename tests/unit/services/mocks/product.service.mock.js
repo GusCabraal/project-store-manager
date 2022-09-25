@@ -18,6 +18,11 @@ const productResponse = {
   name: "Traje de encolhimento",
 };
 
+const otherProductResponse = {
+  id: 1,
+  name: "Martelo de Thor",
+};
+
 const newProductResponse = {
   id: 4,
   name: "Calção do Hulk",
@@ -31,6 +36,7 @@ const updateProductResponse = {
 module.exports = {
   productsResponse,
   productResponse,
+  otherProductResponse,
   newProductResponse,
   updateProductResponse,
 };
