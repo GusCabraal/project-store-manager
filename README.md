@@ -1,16 +1,45 @@
-# 🚧 README em construção 🚧
+# Projeto Store Manager
 
-<!-- Olá, Tryber!
+Esse projeto foi realizado durante o Modulo de Back-end no Bloco 5 da formação da Trybe.
 
-Esse é apenas um arquivo inicial para o README do seu projeto.
+## O que foi desenvolvido
 
-É essencial que você preencha esse documento por conta própria, ok?
+Uma API utilizando a arquitetura MSC (model-service-controller)!
 
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
+A API é um sistema de gerenciamento de vendas no formato dropshipping em que é possível criar, visualizar, deletar e atualizar produtos e vendas. Foi utilizado o banco de dados MySQL para a gestão de dados.
 
-⚠️ IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
+Foram realizados testes unitarios para testar as camadas de forma isolada, de forma a otimizar a aplicação para futuras manutenções. Foi atingido 100% de cobertura de testes em todas as camadas.
 
--->
+![cobertura_de_testes](testes-store-manager.png)
+
+## Como rodar a aplicação
+
+- ### Com docker
+
+Há um arquivo `docker-compose.yml` configurado na raiz do projeto com os serviços `node` e `db`, rode o comando `docker-compose up -d` para subir o container.
+
+- ### Sem docker
+
+Instale as dependências com o comando `npm install`.
+
+
+## Rotas da aplicação
+
+Há uma coleção de endpoints em formato JSON para importar no Insomnia no arquivo `routes-project-store-manager.json`;
+
+### Rotas de produtos
+
+- GET `/products` -> Lista todos os produtos;
+- GET `/products/search?q=name` -> Filtra os produtos com base no seu nome;
+- GET `/products/:id` -> Busca um produto pelo seu ID;
+- POST `/products` -> Cadatra um novo produto;
+- DELETE `/products/:id` -> Deleta um produto com base no seu ID;
+- PUT `/products/:id` -> Atualiza um produto com base no seu ID;
+
+### Rotas de vendas
+
+- GET `/sales` -> Lista todos as vendas;
+- GET `/sales/:id` -> Busca uma venda pelo seu ID;
+- POST `/sales` -> Cadatra uma nova venda com base nos produtos vendidos e suas respectivas quantidades;
+- DELETE `/sales/:id` -> Deleta uma venda com base no seu ID;
+- PUT `/sales/:id` -> Atualiza uma venda com base no seu ID;
