@@ -14,14 +14,11 @@ Foram realizados testes unitarios para testar as camadas de forma isolada, de fo
 
 ## Como rodar a aplicação
 
-- ### Com docker
+Clone o repositório com o comando `git clone git@github.com:GusCabraal/project-store-manager.git`
 
-Há um arquivo `docker-compose.yml` configurado na raiz do projeto com os serviços `node` e `db`, rode o comando `docker-compose up -d` para subir o container.
+- ### Usando o docker
 
-- ### Sem docker
-
-Instale as dependências com o comando `npm install`.
-
+Há um arquivo `docker-compose.yml` configurado na raiz do projeto com os serviços `node` e `db`, rode o comando `docker-compose up -d` para subir os containers, e dentro do container `blogs_api` instale as dependencias com `npm install`.
 
 ## Rotas da aplicação
 
@@ -32,7 +29,7 @@ Há uma coleção de endpoints em formato JSON para importar no Insomnia no arqu
 - GET `/products` -> Lista todos os produtos;
 - GET `/products/search?q=name` -> Filtra os produtos com base no seu nome;
 - GET `/products/:id` -> Busca um produto pelo seu ID;
-- POST `/products` -> Cadatra um novo produto;
+- POST `/products` -> Cadastra um novo produto;
 - DELETE `/products/:id` -> Deleta um produto com base no seu ID;
 - PUT `/products/:id` -> Atualiza um produto com base no seu ID;
 
@@ -40,6 +37,6 @@ Há uma coleção de endpoints em formato JSON para importar no Insomnia no arqu
 
 - GET `/sales` -> Lista todos as vendas;
 - GET `/sales/:id` -> Busca uma venda pelo seu ID;
-- POST `/sales` -> Cadatra uma nova venda com base nos produtos vendidos e suas respectivas quantidades;
+- POST `/sales` -> Cadastra uma nova venda com base nos produtos vendidos e suas respectivas quantidades;
 - DELETE `/sales/:id` -> Deleta uma venda com base no seu ID;
 - PUT `/sales/:id` -> Atualiza uma venda com base no seu ID;
