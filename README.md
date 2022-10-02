@@ -1,6 +1,6 @@
 # Projeto Store Manager
 
-Esse projeto foi realizado durante o Modulo de Back-end no Bloco 5 da formação da Trybe.
+Esse projeto foi realizado durante o Modulo de Back-end no Bloco 5 da formação da Trybe em setembro de 2022.
 
 ## O que foi desenvolvido
 
